@@ -1,79 +1,58 @@
-# arah-api — AI Agent Instructions
+# CLAUDE.md — arah-api
 
-## What this service is
+## What This Repo Does
+Fastify v4 REST API + Socket.io WebSocket gateway. Handles Firebase Auth verification, community report CRUD, user profiles, real-time event broadcasting to nearby drivers, and proxies routing/geocoding requests.
 
-`arah-api` is the Fastify API gateway for the **Arah** Malaysian navigation platform — a sovereign alternative to Waze. It handles JWT authentication via Firebase Admin SDK, proxies routing requests to Valhalla and geocoding requests to Nominatim (with Redis caching), manages community traffic reports in Firestore, exposes user profile endpoints, and broadcasts real-time report events via Socket.io. It runs at `api.arah.my` on AWS EKS (ap-southeast-1).
+## Tech Stack
+- Fastify v4 + Node.js 22 + TypeScript (strict mode, ESM)
+- Socket.io v4 — WebSocket server for real-time report broadcast
+- Firebase Admin SDK — auth token verification + Firestore writes
+- Redis 7.1 — response cache, rate limiting, pub/sub
+- Zod — all request/response schema validation
+- Vitest + Supertest — integration tests against running Fastify instance
 
-## Repo structure
+## Non-Negotiable: Validation Rules
+- **Zod schema on every route**: `body`, `params`, and `querystring` must have explicit Zod schemas
+- Register schemas via Fastify's JSON Schema integration (`schema.body`, `schema.querystring`, etc.)
+- **Never** access `req.body` without going through Zod validation first
+- Response bodies must also have Zod schemas (use `z.infer<>` for TypeScript types)
+- Common schemas live in `src/schemas/` — reuse, don't duplicate
 
-```
-src/
-  index.ts              — App entry point: registers plugins, routes, /health
-  plugins/
-    firebase.ts         — Firebase Admin SDK init; exports db() and adminAuth()
-    auth.ts             — Fastify preHandler hook: verifies Bearer token, decorates req.uid
-  routes/
-    reports.ts          — GET /v1/reports (bbox), POST /v1/reports, POST /v1/reports/:id/vote
-    profile.ts          — GET /v1/profile, PATCH /v1/profile
-Dockerfile              — Multi-stage node:24-alpine, non-root user arah, EXPOSE 3001
-tsconfig.json           — NodeNext module + moduleResolution, target ES2022, outDir dist/
-package.json            — type:"module" (ESM), tsx for dev, tsc for build
-docs/bmad/              — BMAD documentation suite (this directory)
-```
+## Non-Negotiable: Testing Rules
+- **Every new route needs an integration test** in `src/__tests__/routes/`
+- Tests use Supertest against a real Fastify instance — not mocked HTTP
+- Firebase Admin SDK is mocked: `vi.mock('../lib/firebase')` with typed mock implementations
+- Redis uses real Redis on `redis://localhost:6379/1` (DB 1 = test isolation)
+- Test structure per route file:
+  - Test authenticated and unauthenticated access
+  - Test valid input → 200/201 response
+  - Test invalid input → 400 with Zod error details
+  - Test service error → 500 with envelope error shape
+- Run: `npm test` — all tests must pass before opening any PR
 
-## How to run
+## Non-Negotiable: API Standards
+- **Response envelope**: ALL responses follow `{ data: T, meta?: M, error?: E }` shape
+- **Error envelope**: `{ error: { code: string, message: string, details?: unknown } }`
+- HTTP status codes: 200 OK, 201 Created, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 429 Too Many Requests, 500 Internal Server Error
+- Rate limiting: apply `rateLimitPlugin` to all public (unauthenticated) endpoints
+- Auth middleware: `fastify.authenticate` decorator on all protected routes
+- PDPA compliance: log `userIdHash` (HMAC SHA-256 of raw UID), never log raw Firebase UID
 
+## Non-Negotiable: WebSocket Standards
+- All Socket.io events are typed via `src/types/socket.ts` (ServerToClientEvents, ClientToServerEvents)
+- Real-time report broadcasts must use Redis pub/sub so multiple API instances stay in sync
+- Disconnect cleanup: always remove user from room tracking on `disconnect`
+
+## Dev Commands
 ```bash
-# Install dependencies
-npm install
-
-# Copy and fill env vars (see docs/bmad/05-dev-setup.md for full list)
-cp .env.example .env
-
-# Development (watch mode, no build step required)
-npm run dev
-
-# Type-check only
-npm run typecheck
-
-# Production build
-npm run build
-node dist/index.js
-
-# Lint
-npm run lint
-
-# Docker
-docker build -t arah-api .
-docker run --env-file .env -p 3001:3001 arah-api
+npm ci
+npm run dev           # ts-node with hot reload
+npm test              # Vitest integration tests
+npm run test:watch    # Watch mode
+npm run lint          # ESLint
+npm run typecheck     # tsc --noEmit
 ```
 
-Health check: `curl http://localhost:3001/health`
-
-## Coding conventions
-
-- **TypeScript ESM (NodeNext)**: all imports must include the `.js` extension even for `.ts` source files. Example: `import { db } from '../plugins/firebase.js'`.
-- **Fastify plugins**: wrap in `fp()` (fastify-plugin) so decorators are not scoped. See `src/plugins/auth.ts` for the pattern.
-- **Zod validation**: use `schema.safeParse(body)` and return 422 on failure. Keep schemas co-located with the route file.
-- **Auth gates**: routes requiring auth must be registered after `authPlugin`. The plugin is a global preHandler — to make a route public, either register it before `authPlugin` or skip the hook explicitly.
-- **Error shape**: `{ error: { code: 'SNAKE_CASE_CODE', status: <httpCode> } }`. Never leak stack traces.
-- **Redis caching**: use `ioredis` (not the built-in `redis`). Key pattern: `arah:<resource>:<hash-of-params>`. Always set TTLs.
-- **Malaysia bounds**: lat 1.0–7.5, lng 99.5–119.5. Validate all user-supplied coordinates against these bounds (already enforced in Zod schema).
-- **HMAC user hash**: `crypto.createHmac('sha256', HMAC_SECRET).update(uid).digest('hex')` — never store the raw uid in Firestore reports.
-- **No `any` types**: use `unknown` and narrow explicitly. Strict mode is enabled.
-
-## Next story
-
-Read `docs/bmad/04-stories.md` and pick the first story marked `🔲 Todo`. Implement it following the technical notes in that story, then mark it `✅ Done`.
-
-## Cross-repo dependencies
-
-| Dependency | Purpose | Location |
-|---|---|---|
-| Firebase Auth | JWT token verification | Firebase project (configured via env vars) |
-| Firestore | Reports and user profiles | Firebase project |
-| Redis ElastiCache | Route, geocode, report, profile caching | `REDIS_URL` env var |
-| Valhalla | Turn-by-turn routing engine | `VALHALLA_URL` (routing.arah.my) |
-| Nominatim | Geocoding (search + reverse) | `NOMINATIM_URL` (geocode.arah.my) |
-| arah-functions | Expire reports, community vote removal | Firebase Functions — reacts to Firestore writes this service makes |
-| arah (mobile app) | Primary consumer of this API | https://github.com/deanz93/arah |
+## Branch + Story Format
+Stories: `docs/bmad/04-stories.md`. Branch: `feature/API-NNN-short-description`
+Commit: `feat(api): description` (Conventional Commits)
