@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>arah-api · REST API & WebSocket Gateway</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: { colors: {
+        'teal': { DEFAULT: '#00D8A0' },
+        'amber': { DEFAULT: '#FF7040' },
+        'bg': '#080D12', 'surface': '#111820', 'surface2': '#1A2433',
+      }}}
+    }
+  </script>
+  <style>
+    body { font-family: system-ui,-apple-system,sans-serif; }
+    .code-block { background:#0D1117; border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:1.25rem; overflow-x:auto; }
+    pre code { font-family:'Fira Code',monospace; font-size:0.82rem; line-height:1.7; color:#e8f0fa; }
+    .method-get { color:#00D8A0; } .method-post { color:#FF7040; } .method-put { color:#7B7BFF; } .method-delete { color:#FF5050; }
+  </style>
+</head>
+<body class="bg-bg text-white min-h-screen">
+
+  <!-- Nav -->
+  <nav class="fixed top-0 inset-x-0 z-50 border-b border-white/[0.07] bg-bg/90 backdrop-blur-xl">
+    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="font-black text-xl tracking-tight text-white">Ar<span class="text-teal">ah</span> <span class="text-slate-500 font-semibold text-base">/ API</span></a>
+      <div class="flex items-center gap-5 text-sm">
+        <a href="index.html" class="text-white font-semibold">Home</a>
+        <a href="api.html" class="text-slate-400 hover:text-white">API Reference</a>
+        <a href="roadmap.html" class="text-slate-400 hover:text-white">Roadmap</a>
+        <a href="contributing.html" class="text-slate-400 hover:text-white">Contributing</a>
+        <a href="https://github.com/deanz93/arah-api" class="bg-teal text-bg font-bold px-4 py-1.5 rounded-lg hover:opacity-80">GitHub →</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-24 pb-20">
+    <!-- Hero -->
+    <section class="max-w-5xl mx-auto px-6 py-16 text-center">
+      <div class="inline-flex items-center gap-2 bg-surface2 border border-white/[0.08] rounded-full px-4 py-1.5 text-xs text-slate-400 mb-6">
+        <span class="w-2 h-2 rounded-full bg-teal inline-block animate-pulse"></span>
+        REST API &amp; WebSocket Gateway · Arah Platform
+      </div>
+      <h1 class="text-5xl md:text-6xl font-black tracking-tight mb-4">
+        <span class="text-white">arah</span><span class="text-teal">-api</span>
+      </h1>
+      <p class="text-xl text-slate-400 max-w-2xl mx-auto mb-8">
+        REST API &amp; WebSocket gateway for the Arah navigation platform — built with Fastify v4, Socket.io, and Firebase.
+      </p>
+
+      <!-- Badges -->
+      <div class="flex flex-wrap justify-center gap-2 mb-10">
+        <span class="bg-surface2 border border-white/[0.07] px-3 py-1 rounded-full text-xs text-slate-300">Fastify v4</span>
+        <span class="bg-surface2 border border-white/[0.07] px-3 py-1 rounded-full text-xs text-slate-300">Node.js 22</span>
+        <span class="bg-surface2 border border-white/[0.07] px-3 py-1 rounded-full text-xs text-slate-300">TypeScript</span>
+        <span class="bg-surface2 border border-white/[0.07] px-3 py-1 rounded-full text-xs text-slate-300">Socket.io</span>
+        <span class="bg-surface2 border border-white/[0.07] px-3 py-1 rounded-full text-xs text-slate-300">Redis 7.1</span>
+        <span class="bg-teal/20 border border-teal/30 px-3 py-1 rounded-full text-xs text-teal">MIT</span>
+        <span class="bg-amber/20 border border-amber/30 px-3 py-1 rounded-full text-xs text-amber">62 Stories</span>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="api.html" class="bg-teal text-bg font-bold px-6 py-2.5 rounded-lg hover:opacity-80 transition-opacity">View API Reference →</a>
+        <a href="https://github.com/deanz93/arah-api" class="border border-white/[0.12] text-white px-6 py-2.5 rounded-lg hover:border-white/30 transition-colors">View on GitHub</a>
+      </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="max-w-5xl mx-auto px-6 mb-16">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/[0.06] rounded-xl overflow-hidden border border-white/[0.06]">
+        <div class="bg-surface p-6 text-center">
+          <div class="text-3xl font-black text-teal">62</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Stories</div>
+        </div>
+        <div class="bg-surface p-6 text-center">
+          <div class="text-3xl font-black text-white">8</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Epics</div>
+        </div>
+        <div class="bg-surface p-6 text-center">
+          <div class="text-3xl font-black text-white">REST+WS</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Protocol</div>
+        </div>
+        <div class="bg-surface p-6 text-center">
+          <div class="text-3xl font-black text-white">MIT</div>
+          <div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">License</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Overview Cards -->
+    <section class="max-w-5xl mx-auto px-6 mb-16">
+      <h2 class="text-2xl font-bold mb-8">What's inside</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-teal/10 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <h3 class="font-bold text-white mb-2">REST API</h3>
+          <ul class="text-sm text-slate-400 space-y-1">
+            <li>· Firebase Auth middleware</li>
+            <li>· Zod request validation</li>
+            <li>· Rate limiting (60 req/min)</li>
+            <li>· Consistent response envelope</li>
+          </ul>
+        </div>
+
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-amber/10 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-amber" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3 class="font-bold text-white mb-2">WebSocket</h3>
+          <ul class="text-sm text-slate-400 space-y-1">
+            <li>· Real-time report broadcast</li>
+            <li>· Socket.io rooms by geohash</li>
+            <li>· Redis pub/sub fanout</li>
+            <li>· &lt;1s latency target</li>
+          </ul>
+        </div>
+
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          </div>
+          <h3 class="font-bold text-white mb-2">Security &amp; PDPA</h3>
+          <ul class="text-sm text-slate-400 space-y-1">
+            <li>· HMAC GPS coordinate hashing</li>
+            <li>· Rate limiting 60 req/min</li>
+            <li>· PDPA 2010 compliant</li>
+            <li>· Full data export &amp; delete</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Start -->
+    <section class="max-w-5xl mx-auto px-6 mb-16">
+      <h2 class="text-2xl font-bold mb-6">Quick Start</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <div class="code-block">
+            <pre><code>git clone https://github.com/deanz93/arah-api.git
+cd arah-api && npm ci
+npm run dev  # http://localhost:3000</code></pre>
+          </div>
+        </div>
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-6">
+          <h3 class="font-semibold text-slate-300 mb-3 text-sm uppercase tracking-wider">Base URLs</h3>
+          <div class="space-y-3">
+            <div class="flex items-center gap-3">
+              <span class="bg-teal/10 text-teal text-xs px-2 py-1 rounded font-mono">PROD</span>
+              <code class="text-sm text-slate-300 font-mono">https://api.arah.my/v1</code>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="bg-surface2 text-slate-400 text-xs px-2 py-1 rounded font-mono">DEV</span>
+              <code class="text-sm text-slate-300 font-mono">http://localhost:3000</code>
+            </div>
+          </div>
+          <div class="mt-4 pt-4 border-t border-white/[0.07]">
+            <p class="text-xs text-slate-500">All endpoints use Firebase ID token in <code class="text-teal">Authorization: Bearer</code> header.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="max-w-5xl mx-auto px-6">
+      <h2 class="text-2xl font-bold mb-6">Tech Stack</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-4">
+          <div class="text-teal font-bold mb-1">Fastify v4</div>
+          <div class="text-xs text-slate-500">HTTP server &amp; plugin system</div>
+        </div>
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-4">
+          <div class="text-teal font-bold mb-1">Node.js 22</div>
+          <div class="text-xs text-slate-500">ESM, native fetch, latest V8</div>
+        </div>
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-4">
+          <div class="text-teal font-bold mb-1">TypeScript</div>
+          <div class="text-xs text-slate-500">Strict mode, ESM modules</div>
+        </div>
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-4">
+          <div class="text-teal font-bold mb-1">Socket.io v4</div>
+          <div class="text-xs text-slate-500">Real-time bidirectional events</div>
+        </div>
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-4">
+          <div class="text-amber font-bold mb-1">Firebase Admin</div>
+          <div class="text-xs text-slate-500">Auth, Firestore, FCM</div>
+        </div>
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-4">
+          <div class="text-amber font-bold mb-1">Redis 7.1</div>
+          <div class="text-xs text-slate-500">Pub/sub &amp; caching layer</div>
+        </div>
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-4">
+          <div class="text-amber font-bold mb-1">Zod</div>
+          <div class="text-xs text-slate-500">Runtime schema validation</div>
+        </div>
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-4">
+          <div class="text-amber font-bold mb-1">Vitest + Supertest</div>
+          <div class="text-xs text-slate-500">Unit &amp; integration testing</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/[0.07] bg-surface mt-20 py-10">
+    <div class="max-w-5xl mx-auto px-6 flex flex-wrap justify-between items-center gap-4">
+      <div>
+        <div class="font-black text-lg">Ar<span class="text-teal">ah</span></div>
+        <p class="text-xs text-slate-500 mt-1">Part of the Arah Platform · MIT License</p>
+      </div>
+      <div class="flex gap-6 text-sm text-slate-500">
+        <a href="https://deanz93.github.io/arah/" class="hover:text-white">Main Site</a>
+        <a href="https://github.com/deanz93/arah" class="hover:text-white">Monorepo</a>
+        <a href="https://github.com/deanz93/arah-api" class="hover:text-white">This Repo</a>
+      </div>
+      <p class="text-xs text-slate-600">MIT · Built in Malaysia 🇲🇾</p>
+    </div>
+  </footer>
+
+</body>
+</html>

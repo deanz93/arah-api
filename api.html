@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference · arah-api</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: { colors: {
+        'teal': { DEFAULT: '#00D8A0' },
+        'amber': { DEFAULT: '#FF7040' },
+        'bg': '#080D12', 'surface': '#111820', 'surface2': '#1A2433',
+      }}}
+    }
+  </script>
+  <style>
+    body { font-family: system-ui,-apple-system,sans-serif; }
+    .code-block { background:#0D1117; border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:1.25rem; overflow-x:auto; }
+    pre code { font-family:'Fira Code',monospace; font-size:0.82rem; line-height:1.7; color:#e8f0fa; }
+    .method-get { color:#00D8A0; } .method-post { color:#FF7040; } .method-put { color:#7B7BFF; } .method-delete { color:#FF5050; }
+  </style>
+</head>
+<body class="bg-bg text-white min-h-screen">
+
+  <!-- Nav -->
+  <nav class="fixed top-0 inset-x-0 z-50 border-b border-white/[0.07] bg-bg/90 backdrop-blur-xl">
+    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="font-black text-xl tracking-tight text-white">Ar<span class="text-teal">ah</span> <span class="text-slate-500 font-semibold text-base">/ API</span></a>
+      <div class="flex items-center gap-5 text-sm">
+        <a href="index.html" class="text-slate-400 hover:text-white">Home</a>
+        <a href="api.html" class="text-white font-semibold">API Reference</a>
+        <a href="roadmap.html" class="text-slate-400 hover:text-white">Roadmap</a>
+        <a href="contributing.html" class="text-slate-400 hover:text-white">Contributing</a>
+        <a href="https://github.com/deanz93/arah-api" class="bg-teal text-bg font-bold px-4 py-1.5 rounded-lg hover:opacity-80">GitHub →</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-24 pb-20 max-w-5xl mx-auto px-6">
+    <!-- Header -->
+    <div class="py-10 border-b border-white/[0.07] mb-12">
+      <h1 class="text-4xl font-black mb-2">API Reference</h1>
+      <p class="text-slate-400 text-lg">REST + WebSocket API documentation for arah-api</p>
+    </div>
+
+    <!-- Base URL & Auth -->
+    <section class="mb-12">
+      <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+        <span class="w-1 h-5 bg-teal rounded-full inline-block"></span>
+        Base URL &amp; Authentication
+      </h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-6 space-y-4">
+          <div>
+            <div class="text-xs text-slate-500 uppercase tracking-wider mb-2">Production</div>
+            <code class="text-teal font-mono text-sm">https://api.arah.my/v1</code>
+          </div>
+          <div>
+            <div class="text-xs text-slate-500 uppercase tracking-wider mb-2">Development</div>
+            <code class="text-slate-300 font-mono text-sm">http://localhost:3000</code>
+          </div>
+          <div>
+            <div class="text-xs text-slate-500 uppercase tracking-wider mb-2">Authentication</div>
+            <code class="text-slate-300 font-mono text-sm">Authorization: Bearer &lt;firebase-id-token&gt;</code>
+          </div>
+        </div>
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-6 space-y-4">
+          <div>
+            <div class="text-xs text-slate-500 uppercase tracking-wider mb-2">Success Response Envelope</div>
+            <div class="code-block">
+              <pre><code>{ "data": ..., "meta"?: ... }</code></pre>
+            </div>
+          </div>
+          <div>
+            <div class="text-xs text-slate-500 uppercase tracking-wider mb-2">Error Shape</div>
+            <div class="code-block">
+              <pre><code>{ "error": { "code": "...", "message": "...", "details"?: ... } }</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Endpoint Groups -->
+    <section class="mb-12">
+      <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+        <span class="w-1 h-5 bg-teal rounded-full inline-block"></span>
+        Endpoints
+      </h2>
+
+      <!-- Authentication -->
+      <div class="mb-8">
+        <h3 class="text-base font-semibold text-slate-300 mb-3 flex items-center gap-2">
+          <span class="bg-surface2 px-2 py-0.5 rounded text-xs text-slate-400 font-mono">/auth</span>
+          Authentication
+        </h3>
+        <div class="bg-surface border border-white/[0.07] rounded-xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-surface2 border-b border-white/[0.07]">
+                <tr>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider w-24">Method</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider">Endpoint</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider w-16">Auth</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider">Description</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/[0.04]">
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-get text-xs">GET</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/auth/me</td>
+                  <td class="px-5 py-3 text-teal text-xs">✓</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">Get current user profile</td>
+                </tr>
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-post text-xs">POST</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/auth/refresh</td>
+                  <td class="px-5 py-3 text-teal text-xs">✓</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">Refresh session</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reports -->
+      <div class="mb-8">
+        <h3 class="text-base font-semibold text-slate-300 mb-3 flex items-center gap-2">
+          <span class="bg-surface2 px-2 py-0.5 rounded text-xs text-slate-400 font-mono">/reports</span>
+          Reports
+        </h3>
+        <div class="bg-surface border border-white/[0.07] rounded-xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-surface2 border-b border-white/[0.07]">
+                <tr>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider w-24">Method</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider">Endpoint</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider w-16">Auth</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider">Description</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/[0.04]">
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-post text-xs">POST</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/reports</td>
+                  <td class="px-5 py-3 text-teal text-xs">✓</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">Submit a new community report</td>
+                </tr>
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-get text-xs">GET</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/reports</td>
+                  <td class="px-5 py-3 text-slate-600 text-xs">—</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">List active reports in bounding box</td>
+                </tr>
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-get text-xs">GET</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/reports/:id</td>
+                  <td class="px-5 py-3 text-slate-600 text-xs">—</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">Get single report</td>
+                </tr>
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-put text-xs">PUT</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/reports/:id/vote</td>
+                  <td class="px-5 py-3 text-teal text-xs">✓</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">Upvote or downvote report</td>
+                </tr>
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-delete text-xs">DELETE</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/reports/:id</td>
+                  <td class="px-5 py-3 text-teal text-xs">✓</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">Remove own report</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Routing & Geocoding -->
+      <div class="mb-8">
+        <h3 class="text-base font-semibold text-slate-300 mb-3 flex items-center gap-2">
+          <span class="bg-surface2 px-2 py-0.5 rounded text-xs text-slate-400 font-mono">/route /geocode</span>
+          Routing &amp; Geocoding (proxy)
+        </h3>
+        <div class="bg-surface border border-white/[0.07] rounded-xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-surface2 border-b border-white/[0.07]">
+                <tr>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider w-24">Method</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider">Endpoint</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider w-16">Auth</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider">Description</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/[0.04]">
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-get text-xs">GET</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/route</td>
+                  <td class="px-5 py-3 text-slate-600 text-xs">—</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">Get route between two points</td>
+                </tr>
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-get text-xs">GET</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/geocode</td>
+                  <td class="px-5 py-3 text-slate-600 text-xs">—</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">Forward geocode address</td>
+                </tr>
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-get text-xs">GET</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/reverse-geocode</td>
+                  <td class="px-5 py-3 text-slate-600 text-xs">—</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">Reverse geocode coordinates</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Profile -->
+      <div class="mb-8">
+        <h3 class="text-base font-semibold text-slate-300 mb-3 flex items-center gap-2">
+          <span class="bg-surface2 px-2 py-0.5 rounded text-xs text-slate-400 font-mono">/profile</span>
+          User Profile
+        </h3>
+        <div class="bg-surface border border-white/[0.07] rounded-xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-surface2 border-b border-white/[0.07]">
+                <tr>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider w-24">Method</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider">Endpoint</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider w-16">Auth</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider">Description</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/[0.04]">
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-get text-xs">GET</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/profile</td>
+                  <td class="px-5 py-3 text-teal text-xs">✓</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">Get user profile + stats</td>
+                </tr>
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-put text-xs">PUT</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/profile</td>
+                  <td class="px-5 py-3 text-teal text-xs">✓</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">Update profile</td>
+                </tr>
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-get text-xs">GET</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/profile/reports</td>
+                  <td class="px-5 py-3 text-teal text-xs">✓</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">My submitted reports</td>
+                </tr>
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-delete text-xs">DELETE</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/profile</td>
+                  <td class="px-5 py-3 text-teal text-xs">✓</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">Delete account (PDPA)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flood & Malaysia APIs -->
+      <div class="mb-8">
+        <h3 class="text-base font-semibold text-slate-300 mb-3 flex items-center gap-2">
+          <span class="bg-surface2 px-2 py-0.5 rounded text-xs text-slate-400 font-mono">/flood-zones /toll-costs …</span>
+          Flood &amp; Malaysia APIs
+        </h3>
+        <div class="bg-surface border border-white/[0.07] rounded-xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-surface2 border-b border-white/[0.07]">
+                <tr>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider w-24">Method</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider">Endpoint</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider w-16">Auth</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider">Description</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/[0.04]">
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-get text-xs">GET</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/flood-zones</td>
+                  <td class="px-5 py-3 text-slate-600 text-xs">—</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">Active flood zones</td>
+                </tr>
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-get text-xs">GET</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/toll-costs</td>
+                  <td class="px-5 py-3 text-slate-600 text-xs">—</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">Toll costs for route</td>
+                </tr>
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-get text-xs">GET</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/prayer-times</td>
+                  <td class="px-5 py-3 text-slate-600 text-xs">—</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">Waktu solat for coordinates</td>
+                </tr>
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-get text-xs">GET</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/checkpoints</td>
+                  <td class="px-5 py-3 text-slate-600 text-xs">—</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">JB-SG wait times</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Health -->
+      <div class="mb-8">
+        <h3 class="text-base font-semibold text-slate-300 mb-3 flex items-center gap-2">
+          <span class="bg-surface2 px-2 py-0.5 rounded text-xs text-slate-400 font-mono">/health /metrics</span>
+          Health &amp; Observability
+        </h3>
+        <div class="bg-surface border border-white/[0.07] rounded-xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-surface2 border-b border-white/[0.07]">
+                <tr>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider w-24">Method</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider">Endpoint</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider w-16">Auth</th>
+                  <th class="text-left px-5 py-3 text-slate-500 font-medium text-xs uppercase tracking-wider">Description</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/[0.04]">
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-get text-xs">GET</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/health</td>
+                  <td class="px-5 py-3 text-slate-600 text-xs">—</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">Service health check</td>
+                </tr>
+                <tr class="hover:bg-white/[0.02] transition-colors">
+                  <td class="px-5 py-3 font-mono font-bold method-get text-xs">GET</td>
+                  <td class="px-5 py-3 font-mono text-slate-300 text-xs">/metrics</td>
+                  <td class="px-5 py-3 text-slate-600 text-xs">—</td>
+                  <td class="px-5 py-3 text-slate-400 text-xs">Prometheus metrics</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WebSocket Events -->
+    <section class="mb-12">
+      <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+        <span class="w-1 h-5 bg-amber rounded-full inline-block"></span>
+        WebSocket Events
+      </h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-surface border border-white/[0.07] rounded-xl overflow-hidden">
+          <div class="bg-surface2 px-5 py-3 border-b border-white/[0.07]">
+            <h3 class="text-sm font-semibold text-slate-300">Client → Server</h3>
+          </div>
+          <table class="w-full text-sm">
+            <tbody class="divide-y divide-white/[0.04]">
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="px-5 py-3 font-mono text-amber text-xs">report:submit</td>
+                <td class="px-5 py-3 text-slate-400 text-xs">Submit a new report via WS</td>
+              </tr>
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="px-5 py-3 font-mono text-amber text-xs">report:vote</td>
+                <td class="px-5 py-3 text-slate-400 text-xs">Vote on a report via WS</td>
+              </tr>
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="px-5 py-3 font-mono text-amber text-xs">join:area</td>
+                <td class="px-5 py-3 text-slate-400 text-xs">Subscribe to a geohash area room</td>
+              </tr>
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="px-5 py-3 font-mono text-amber text-xs">leave:area</td>
+                <td class="px-5 py-3 text-slate-400 text-xs">Unsubscribe from area room</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="bg-surface border border-white/[0.07] rounded-xl overflow-hidden">
+          <div class="bg-surface2 px-5 py-3 border-b border-white/[0.07]">
+            <h3 class="text-sm font-semibold text-slate-300">Server → Client</h3>
+          </div>
+          <table class="w-full text-sm">
+            <tbody class="divide-y divide-white/[0.04]">
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="px-5 py-3 font-mono text-teal text-xs">report:new</td>
+                <td class="px-5 py-3 text-slate-400 text-xs">Broadcast when new report lands nearby</td>
+              </tr>
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="px-5 py-3 font-mono text-teal text-xs">report:updated</td>
+                <td class="px-5 py-3 text-slate-400 text-xs">Vote count or status changed</td>
+              </tr>
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="px-5 py-3 font-mono text-teal text-xs">report:expired</td>
+                <td class="px-5 py-3 text-slate-400 text-xs">Report removed from active index</td>
+              </tr>
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="px-5 py-3 font-mono text-teal text-xs">flood:alert</td>
+                <td class="px-5 py-3 text-slate-400 text-xs">Emergency flood zone alert push</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rate Limits -->
+    <section class="mb-12">
+      <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+        <span class="w-1 h-5 bg-purple-400 rounded-full inline-block"></span>
+        Rate Limits
+      </h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-5 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-surface2 flex items-center justify-center text-lg font-black text-slate-400">60</div>
+          <div>
+            <div class="font-semibold text-white">req/min per IP</div>
+            <div class="text-xs text-slate-500">Public (unauthenticated) endpoints</div>
+          </div>
+        </div>
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-5 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-surface2 flex items-center justify-center text-lg font-black text-teal">120</div>
+          <div>
+            <div class="font-semibold text-white">req/min per user</div>
+            <div class="text-xs text-slate-500">Authenticated requests (Firebase UID)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Example Request -->
+    <section class="mb-12">
+      <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+        <span class="w-1 h-5 bg-teal rounded-full inline-block"></span>
+        Example Request
+      </h2>
+      <div class="code-block">
+        <pre><code>curl https://api.arah.my/v1/reports?bbox=101.5,3.0,102.0,3.5 \
+  -H "Authorization: Bearer YOUR_FIREBASE_ID_TOKEN"</code></pre>
+      </div>
+      <p class="text-xs text-slate-500 mt-3">Returns a paginated list of active reports within the bounding box <code class="text-slate-400">?bbox=minLng,minLat,maxLng,maxLat</code>.</p>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/[0.07] bg-surface mt-20 py-10">
+    <div class="max-w-5xl mx-auto px-6 flex flex-wrap justify-between items-center gap-4">
+      <div>
+        <div class="font-black text-lg">Ar<span class="text-teal">ah</span></div>
+        <p class="text-xs text-slate-500 mt-1">Part of the Arah Platform · MIT License</p>
+      </div>
+      <div class="flex gap-6 text-sm text-slate-500">
+        <a href="https://deanz93.github.io/arah/" class="hover:text-white">Main Site</a>
+        <a href="https://github.com/deanz93/arah" class="hover:text-white">Monorepo</a>
+        <a href="https://github.com/deanz93/arah-api" class="hover:text-white">This Repo</a>
+      </div>
+      <p class="text-xs text-slate-600">MIT · Built in Malaysia 🇲🇾</p>
+    </div>
+  </footer>
+
+</body>
+</html>

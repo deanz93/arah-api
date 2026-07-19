@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contributing · arah-api</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: { colors: {
+        'teal': { DEFAULT: '#00D8A0' },
+        'amber': { DEFAULT: '#FF7040' },
+        'bg': '#080D12', 'surface': '#111820', 'surface2': '#1A2433',
+      }}}
+    }
+  </script>
+  <style>
+    body { font-family: system-ui,-apple-system,sans-serif; }
+    .code-block { background:#0D1117; border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:1.25rem; overflow-x:auto; }
+    pre code { font-family:'Fira Code',monospace; font-size:0.82rem; line-height:1.7; color:#e8f0fa; }
+  </style>
+</head>
+<body class="bg-bg text-white min-h-screen">
+
+  <!-- Nav -->
+  <nav class="fixed top-0 inset-x-0 z-50 border-b border-white/[0.07] bg-bg/90 backdrop-blur-xl">
+    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="font-black text-xl tracking-tight text-white">Ar<span class="text-teal">ah</span> <span class="text-slate-500 font-semibold text-base">/ API</span></a>
+      <div class="flex items-center gap-5 text-sm">
+        <a href="index.html" class="text-slate-400 hover:text-white">Home</a>
+        <a href="api.html" class="text-slate-400 hover:text-white">API Reference</a>
+        <a href="roadmap.html" class="text-slate-400 hover:text-white">Roadmap</a>
+        <a href="contributing.html" class="text-white font-semibold">Contributing</a>
+        <a href="https://github.com/deanz93/arah-api" class="bg-teal text-bg font-bold px-4 py-1.5 rounded-lg hover:opacity-80">GitHub →</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-24 pb-20 max-w-5xl mx-auto px-6">
+    <!-- Header -->
+    <div class="py-10 border-b border-white/[0.07] mb-12">
+      <h1 class="text-4xl font-black mb-2">Contributing to arah-api</h1>
+      <p class="text-slate-400 text-lg">Development setup, branch conventions, and PR checklist</p>
+    </div>
+
+    <!-- Setup -->
+    <section class="mb-12">
+      <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+        <span class="w-1 h-5 bg-teal rounded-full inline-block"></span>
+        Environment Setup
+      </h2>
+      <div class="space-y-4">
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-5">
+          <div class="text-xs text-slate-500 uppercase tracking-wider mb-3 font-medium">Prerequisites</div>
+          <div class="grid md:grid-cols-3 gap-3">
+            <div class="bg-surface2 rounded-lg px-4 py-3 flex items-center gap-3">
+              <span class="text-teal font-mono text-xs">Node.js</span>
+              <span class="text-slate-500 text-xs">≥ 22.0.0 (LTS)</span>
+            </div>
+            <div class="bg-surface2 rounded-lg px-4 py-3 flex items-center gap-3">
+              <span class="text-teal font-mono text-xs">Redis</span>
+              <span class="text-slate-500 text-xs">7.1+ (local or Docker)</span>
+            </div>
+            <div class="bg-surface2 rounded-lg px-4 py-3 flex items-center gap-3">
+              <span class="text-teal font-mono text-xs">Firebase</span>
+              <span class="text-slate-500 text-xs">Service account JSON</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs text-slate-500 uppercase tracking-wider mb-3 font-medium">Clone &amp; Install</div>
+          <div class="code-block">
+            <pre><code>git clone https://github.com/deanz93/arah-api.git
+cd arah-api
+npm ci</code></pre>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs text-slate-500 uppercase tracking-wider mb-3 font-medium">Environment Variables</div>
+          <div class="code-block">
+            <pre><code>cp .env.example .env
+# Fill in:
+# FIREBASE_SERVICE_ACCOUNT_PATH=./service-account.json
+# REDIS_URL=redis://localhost:6379
+# PORT=3000
+# NODE_ENV=development</code></pre>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs text-slate-500 uppercase tracking-wider mb-3 font-medium">Run Development Server</div>
+          <div class="code-block">
+            <pre><code>npm run dev        # http://localhost:3000 with hot reload
+npm run test       # Vitest unit + integration tests
+npm run typecheck  # tsc --noEmit
+npm run lint       # ESLint</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Branch Conventions -->
+    <section class="mb-12">
+      <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+        <span class="w-1 h-5 bg-amber rounded-full inline-block"></span>
+        Branch &amp; Commit Conventions
+      </h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-5">
+          <div class="text-xs text-slate-500 uppercase tracking-wider mb-3 font-medium">Branch Format</div>
+          <div class="code-block mb-3">
+            <pre><code>feature/API-NNN-short-description
+fix/API-NNN-short-description
+chore/description</code></pre>
+          </div>
+          <div class="space-y-2 text-sm">
+            <div class="flex items-center gap-2 text-slate-400">
+              <span class="text-teal text-xs">✓</span>
+              <code class="text-xs text-slate-300">feature/API-009-post-reports-endpoint</code>
+            </div>
+            <div class="flex items-center gap-2 text-slate-400">
+              <span class="text-teal text-xs">✓</span>
+              <code class="text-xs text-slate-300">fix/API-012-vote-idempotency</code>
+            </div>
+            <div class="flex items-center gap-2 text-slate-400">
+              <span class="text-red-400 text-xs">✗</span>
+              <code class="text-xs text-slate-500">my-feature (no story ID)</code>
+            </div>
+          </div>
+        </div>
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-5">
+          <div class="text-xs text-slate-500 uppercase tracking-wider mb-3 font-medium">Commit Format</div>
+          <div class="code-block mb-3">
+            <pre><code>feat(api): add POST /reports endpoint (API-009)
+fix(api): correct vote idempotency check (API-012)
+test(api): add integration test for /auth/me
+chore: update dependencies</code></pre>
+          </div>
+          <div class="space-y-1 text-xs text-slate-500 mt-3">
+            <div>Allowed scopes: <code class="text-slate-400">api</code>, <code class="text-slate-400">ws</code>, <code class="text-slate-400">auth</code>, <code class="text-slate-400">db</code>, <code class="text-slate-400">ci</code></div>
+            <div>Include story ID in parentheses when applicable.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skill Files -->
+    <section class="mb-12">
+      <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+        <span class="w-1 h-5 bg-purple-400 rounded-full inline-block"></span>
+        Skill Files
+      </h2>
+      <p class="text-slate-400 text-sm mb-4">Skill files in <code class="text-slate-300 bg-surface2 px-2 py-0.5 rounded">.claude/skills/</code> guide AI-assisted development. Read them before working on related code.</p>
+      <div class="grid md:grid-cols-3 gap-4">
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-5">
+          <div class="font-mono text-teal text-sm mb-2">route.md</div>
+          <p class="text-xs text-slate-500">Conventions for adding new Fastify routes: plugin structure, Zod schema, response envelope, error codes, auth guard placement.</p>
+        </div>
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-5">
+          <div class="font-mono text-teal text-sm mb-2">test.md</div>
+          <p class="text-xs text-slate-500">Integration test patterns using Vitest + Supertest: test database seeding, Firebase auth mocking, Redis test instance setup.</p>
+        </div>
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-5">
+          <div class="font-mono text-teal text-sm mb-2">pr.md</div>
+          <p class="text-xs text-slate-500">Pull request checklist, description template, review criteria, and story definition-of-done gates.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pre-PR Checklist -->
+    <section class="mb-12">
+      <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+        <span class="w-1 h-5 bg-teal rounded-full inline-block"></span>
+        Pre-PR Checklist
+      </h2>
+      <div class="bg-surface border border-white/[0.07] rounded-xl p-6">
+        <div class="space-y-3">
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input type="checkbox" class="mt-0.5 accent-teal" />
+            <div>
+              <div class="text-sm text-white font-medium">TypeScript compiles clean</div>
+              <div class="text-xs text-slate-500 mt-0.5"><code>npm run typecheck</code> exits 0 — no <code>any</code> suppressions without comment</div>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input type="checkbox" class="mt-0.5 accent-teal" />
+            <div>
+              <div class="text-sm text-white font-medium">Lint passes</div>
+              <div class="text-xs text-slate-500 mt-0.5"><code>npm run lint</code> exits 0 with no errors or warnings</div>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input type="checkbox" class="mt-0.5 accent-teal" />
+            <div>
+              <div class="text-sm text-white font-medium">All tests pass</div>
+              <div class="text-xs text-slate-500 mt-0.5"><code>npm run test</code> — both unit and integration suites green</div>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input type="checkbox" class="mt-0.5 accent-teal" />
+            <div>
+              <div class="text-sm text-white font-medium">Zod schema on every route</div>
+              <div class="text-xs text-slate-500 mt-0.5">Request body, query params, and path params all validated with Zod — no unvalidated inputs</div>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input type="checkbox" class="mt-0.5 accent-teal" />
+            <div>
+              <div class="text-sm text-white font-medium">Response envelope used</div>
+              <div class="text-xs text-slate-500 mt-0.5">All success responses use <code>{"data": ...}</code> shape; errors use <code>{"error": {"code": ..., "message": ...}}</code></div>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input type="checkbox" class="mt-0.5 accent-teal" />
+            <div>
+              <div class="text-sm text-white font-medium">Integration tests cover 200 + 400 + 401</div>
+              <div class="text-xs text-slate-500 mt-0.5">Each endpoint tested for: success (200/201), bad input (400), and unauthenticated request (401) where applicable</div>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input type="checkbox" class="mt-0.5 accent-teal" />
+            <div>
+              <div class="text-sm text-white font-medium">Story ID referenced in PR title</div>
+              <div class="text-xs text-slate-500 mt-0.5">e.g., <code>feat(api): add POST /reports endpoint (API-009)</code></div>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input type="checkbox" class="mt-0.5 accent-teal" />
+            <div>
+              <div class="text-sm text-white font-medium">No PII in logs or error messages</div>
+              <div class="text-xs text-slate-500 mt-0.5">No user IDs, emails, GPS coordinates, or tokens logged at any level in production paths</div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Code Style -->
+    <section class="mb-12">
+      <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+        <span class="w-1 h-5 bg-amber rounded-full inline-block"></span>
+        Code Style Notes
+      </h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-5 space-y-3">
+          <div class="text-sm font-semibold text-white">ESM-first</div>
+          <div class="text-xs text-slate-400">All imports use <code>.js</code> extension (ESM Node.js requirement). No CommonJS <code>require()</code>.</div>
+          <div class="code-block mt-2">
+            <pre><code>import { reportSchema } from './schemas/report.js'</code></pre>
+          </div>
+        </div>
+        <div class="bg-surface border border-white/[0.07] rounded-xl p-5 space-y-3">
+          <div class="text-sm font-semibold text-white">Fastify Plugin Pattern</div>
+          <div class="text-xs text-slate-400">Routes wrapped in <code>fastify.register()</code> plugin functions with encapsulation. No top-level route registrations.</div>
+          <div class="code-block mt-2">
+            <pre><code>export default fp(async (fastify) => {
+  fastify.post('/reports', { schema }, handler)
+})</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/[0.07] bg-surface mt-20 py-10">
+    <div class="max-w-5xl mx-auto px-6 flex flex-wrap justify-between items-center gap-4">
+      <div>
+        <div class="font-black text-lg">Ar<span class="text-teal">ah</span></div>
+        <p class="text-xs text-slate-500 mt-1">Part of the Arah Platform · MIT License</p>
+      </div>
+      <div class="flex gap-6 text-sm text-slate-500">
+        <a href="https://deanz93.github.io/arah/" class="hover:text-white">Main Site</a>
+        <a href="https://github.com/deanz93/arah" class="hover:text-white">Monorepo</a>
+        <a href="https://github.com/deanz93/arah-api" class="hover:text-white">This Repo</a>
+      </div>
+      <p class="text-xs text-slate-600">MIT · Built in Malaysia 🇲🇾</p>
+    </div>
+  </footer>
+
+</body>
+</html>

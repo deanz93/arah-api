@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roadmap · arah-api</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: { colors: {
+        'teal': { DEFAULT: '#00D8A0' },
+        'amber': { DEFAULT: '#FF7040' },
+        'bg': '#080D12', 'surface': '#111820', 'surface2': '#1A2433',
+      }}}
+    }
+  </script>
+  <style>
+    body { font-family: system-ui,-apple-system,sans-serif; }
+    .code-block { background:#0D1117; border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:1.25rem; overflow-x:auto; }
+    pre code { font-family:'Fira Code',monospace; font-size:0.82rem; line-height:1.7; color:#e8f0fa; }
+  </style>
+</head>
+<body class="bg-bg text-white min-h-screen">
+
+  <!-- Nav -->
+  <nav class="fixed top-0 inset-x-0 z-50 border-b border-white/[0.07] bg-bg/90 backdrop-blur-xl">
+    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="font-black text-xl tracking-tight text-white">Ar<span class="text-teal">ah</span> <span class="text-slate-500 font-semibold text-base">/ API</span></a>
+      <div class="flex items-center gap-5 text-sm">
+        <a href="index.html" class="text-slate-400 hover:text-white">Home</a>
+        <a href="api.html" class="text-slate-400 hover:text-white">API Reference</a>
+        <a href="roadmap.html" class="text-white font-semibold">Roadmap</a>
+        <a href="contributing.html" class="text-slate-400 hover:text-white">Contributing</a>
+        <a href="https://github.com/deanz93/arah-api" class="bg-teal text-bg font-bold px-4 py-1.5 rounded-lg hover:opacity-80">GitHub →</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-24 pb-20 max-w-5xl mx-auto px-6">
+    <!-- Header -->
+    <div class="py-10 border-b border-white/[0.07] mb-12">
+      <h1 class="text-4xl font-black mb-2">API Development Roadmap</h1>
+      <p class="text-slate-400 text-lg">62 stories across 8 epics — BMAD methodology</p>
+    </div>
+
+    <!-- Overall Progress -->
+    <section class="mb-12">
+      <div class="bg-surface border border-white/[0.07] rounded-xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <div class="text-sm text-slate-400">Overall Progress</div>
+            <div class="text-3xl font-black text-white mt-1">0 / 62 stories</div>
+          </div>
+          <div class="text-right">
+            <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Status</div>
+            <div class="bg-surface2 text-slate-400 text-sm px-3 py-1 rounded-full">Planning Phase</div>
+          </div>
+        </div>
+        <div class="w-full bg-surface2 rounded-full h-2">
+          <div class="bg-teal h-2 rounded-full" style="width:0%"></div>
+        </div>
+        <div class="flex justify-between mt-2 text-xs text-slate-600">
+          <span>0%</span>
+          <span>100%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Epics Grid -->
+    <section class="space-y-6">
+
+      <!-- Epic 1: Core Infrastructure -->
+      <div class="bg-surface border border-white/[0.07] rounded-xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-white/[0.07] flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-2 h-2 rounded-full bg-teal inline-block"></span>
+            <h3 class="font-bold text-white">Epic 1 · Core Infrastructure</h3>
+            <span class="text-xs text-slate-500 font-mono">API-001–008</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-slate-500">0 / 8</span>
+            <div class="w-20 bg-surface2 rounded-full h-1.5">
+              <div class="bg-teal h-1.5 rounded-full" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-001</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Fastify setup</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-002</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Auth middleware</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-003</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Redis connection</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-004</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Rate limiting</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-005</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Zod validation</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-006</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Health check</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-007</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Docker setup</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-008</span>
+              <span class="text-xs text-slate-500 hidden md:inline">CI pipeline</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Epic 2: Reports API -->
+      <div class="bg-surface border border-white/[0.07] rounded-xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-white/[0.07] flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-2 h-2 rounded-full bg-amber inline-block"></span>
+            <h3 class="font-bold text-white">Epic 2 · Reports API</h3>
+            <span class="text-xs text-slate-500 font-mono">API-009–020</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-slate-500">0 / 12</span>
+            <div class="w-20 bg-surface2 rounded-full h-1.5">
+              <div class="bg-amber h-1.5 rounded-full" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-009</span>
+              <span class="text-xs text-slate-500 hidden md:inline">POST /reports</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-010</span>
+              <span class="text-xs text-slate-500 hidden md:inline">GET /reports bbox</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-011</span>
+              <span class="text-xs text-slate-500 hidden md:inline">GET /reports/:id</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-012</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Vote system</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-013</span>
+              <span class="text-xs text-slate-500 hidden md:inline">DELETE report</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-014</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Photo upload</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-015</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Geospatial query</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-016</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Report types</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-017</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Auto-expiry TTL</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-018</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Report history</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-019</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Nearby query</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-020</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Report moderation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Epic 3: Routing & Geocoding Proxy -->
+      <div class="bg-surface border border-white/[0.07] rounded-xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-white/[0.07] flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-2 h-2 rounded-full bg-purple-400 inline-block"></span>
+            <h3 class="font-bold text-white">Epic 3 · Routing &amp; Geocoding Proxy</h3>
+            <span class="text-xs text-slate-500 font-mono">API-021–028</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-slate-500">0 / 8</span>
+            <div class="w-20 bg-surface2 rounded-full h-1.5">
+              <div class="bg-purple-400 h-1.5 rounded-full" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-021</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Valhalla proxy</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-022</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Nominatim proxy</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-023</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Reverse geocode</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-024</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Toll calc</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-025</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Route caching</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-026</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Geocode caching</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-027</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Multimodal routes</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-028</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Route optimization</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Epic 4: User Profile API -->
+      <div class="bg-surface border border-white/[0.07] rounded-xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-white/[0.07] flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span>
+            <h3 class="font-bold text-white">Epic 4 · User Profile API</h3>
+            <span class="text-xs text-slate-500 font-mono">API-029–038</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-slate-500">0 / 10</span>
+            <div class="w-20 bg-surface2 rounded-full h-1.5">
+              <div class="bg-blue-400 h-1.5 rounded-full" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-029</span>
+              <span class="text-xs text-slate-500 hidden md:inline">GET /profile</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-030</span>
+              <span class="text-xs text-slate-500 hidden md:inline">PUT /profile</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-031</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Profile reports</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-032</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Gamification XP</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-033</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Badges system</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-034</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Leaderboard</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-035</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Streak tracking</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-036</span>
+              <span class="text-xs text-slate-500 hidden md:inline">PDPA export</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-037</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Account delete</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-038</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Avatar upload</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Epic 5: Real-Time WebSocket -->
+      <div class="bg-surface border border-white/[0.07] rounded-xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-white/[0.07] flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-2 h-2 rounded-full bg-amber inline-block"></span>
+            <h3 class="font-bold text-white">Epic 5 · Real-Time WebSocket</h3>
+            <span class="text-xs text-slate-500 font-mono">API-039–046</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-slate-500">0 / 8</span>
+            <div class="w-20 bg-surface2 rounded-full h-1.5">
+              <div class="bg-amber h-1.5 rounded-full" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-039</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Socket.io setup</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-040</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Geohash rooms</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-041</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Redis pub/sub</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-042</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Broadcast events</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-043</span>
+              <span class="text-xs text-slate-500 hidden md:inline">WS auth middleware</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-044</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Flood alert WS</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-045</span>
+              <span class="text-xs text-slate-500 hidden md:inline">WS rate limiting</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-046</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Reconnect logic</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Epic 6: Flood & Malaysia APIs -->
+      <div class="bg-surface border border-white/[0.07] rounded-xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-white/[0.07] flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-2 h-2 rounded-full bg-teal inline-block"></span>
+            <h3 class="font-bold text-white">Epic 6 · Flood &amp; Malaysia APIs</h3>
+            <span class="text-xs text-slate-500 font-mono">API-047–054</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-slate-500">0 / 8</span>
+            <div class="w-20 bg-surface2 rounded-full h-1.5">
+              <div class="bg-teal h-1.5 rounded-full" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-047</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Flood zones CRUD</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-048</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Flood alert push</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-049</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Prayer times API</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-050</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Toll database</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-051</span>
+              <span class="text-xs text-slate-500 hidden md:inline">JB-SG checkpoints</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-052</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Emergency broadcasts</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-053</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Holiday calendar</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-054</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Traffic incidents</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Epic 7: Security & PDPA -->
+      <div class="bg-surface border border-white/[0.07] rounded-xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-white/[0.07] flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-2 h-2 rounded-full bg-red-400 inline-block"></span>
+            <h3 class="font-bold text-white">Epic 7 · Security &amp; PDPA</h3>
+            <span class="text-xs text-slate-500 font-mono">API-055–058</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-slate-500">0 / 4</span>
+            <div class="w-20 bg-surface2 rounded-full h-1.5">
+              <div class="bg-red-400 h-1.5 rounded-full" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-055</span>
+              <span class="text-xs text-slate-500 hidden md:inline">HMAC GPS hashing</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-056</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Rate limit tuning</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-057</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Audit log</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-058</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Data retention</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Epic 8: Observability -->
+      <div class="bg-surface border border-white/[0.07] rounded-xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-white/[0.07] flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="w-2 h-2 rounded-full bg-yellow-400 inline-block"></span>
+            <h3 class="font-bold text-white">Epic 8 · Observability</h3>
+            <span class="text-xs text-slate-500 font-mono">API-059–062</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-slate-500">0 / 4</span>
+            <div class="w-20 bg-surface2 rounded-full h-1.5">
+              <div class="bg-yellow-400 h-1.5 rounded-full" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-059</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Prometheus metrics</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-060</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Structured logging</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-061</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Distributed tracing</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface2 rounded-lg px-3 py-2">
+              <span class="text-slate-600 text-xs">🔲</span>
+              <span class="text-xs text-slate-400 font-mono">API-062</span>
+              <span class="text-xs text-slate-500 hidden md:inline">Health check v2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- View on GitHub CTA -->
+    <div class="mt-10 text-center">
+      <a href="https://github.com/deanz93/arah-api/issues" class="inline-flex items-center gap-2 bg-surface border border-white/[0.12] text-white px-6 py-3 rounded-lg hover:border-white/30 transition-colors text-sm font-medium">
+        Track stories on GitHub Issues →
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/[0.07] bg-surface mt-20 py-10">
+    <div class="max-w-5xl mx-auto px-6 flex flex-wrap justify-between items-center gap-4">
+      <div>
+        <div class="font-black text-lg">Ar<span class="text-teal">ah</span></div>
+        <p class="text-xs text-slate-500 mt-1">Part of the Arah Platform · MIT License</p>
+      </div>
+      <div class="flex gap-6 text-sm text-slate-500">
+        <a href="https://deanz93.github.io/arah/" class="hover:text-white">Main Site</a>
+        <a href="https://github.com/deanz93/arah" class="hover:text-white">Monorepo</a>
+        <a href="https://github.com/deanz93/arah-api" class="hover:text-white">This Repo</a>
+      </div>
+      <p class="text-xs text-slate-600">MIT · Built in Malaysia 🇲🇾</p>
+    </div>
+  </footer>
+
+</body>
+</html>
