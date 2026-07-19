@@ -1,5 +1,9 @@
 # arah-api
 
+> 🔒 **Private Repository** — This repo is part of the [Arah platform](https://github.com/deanz93/arah). Source code is proprietary and not open-source.
+
+
+
 Fastify API gateway for the [Arah](https://github.com/deanz93/arah) navigation platform.
 Handles routing, geocoding proxying, community reports CRUD + voting, and user profiles.
 Authenticates all requests via Firebase ID tokens.
