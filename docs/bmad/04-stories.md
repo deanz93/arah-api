@@ -1352,3 +1352,133 @@ Stories are ordered by dependency (foundational first). Each story is self-conta
 **Estimate:** M
 
 ---
+
+---
+
+## Epic 8: Tetapan Islam — Backend Routes
+
+Islamic API routes. All endpoints prefixed `/v1/islamic`. Prayer time data proxied from `api.waktusolat.app/v2` (Malaysia) and `api.aladhan.com` (worldwide) with server-side caching. Nearest Masjid/Surau data from Nominatim.
+
+---
+
+## API-063: GET /v1/islamic/zones — list all Malaysia prayer zones
+
+**Epic:** Tetapan Islam
+**Status:** 🔲 Todo
+**Priority:** MVP
+
+**As a** mobile client **I want** to fetch the list of all JAKIM prayer time zones **so that** the user can manually select or confirm their detected zone.
+
+**Acceptance criteria:**
+- [ ] `GET /v1/islamic/zones` returns `{ zones: [{ code, negeri, lokasi }] }`
+- [ ] Data sourced from `GET https://api.waktusolat.app/v2/zones` and cached in Redis for 24 hours
+- [ ] Response time < 100ms on cache hit
+- [ ] Route is public (no auth required)
+
+**Technical notes:** `src/routes/islamic.ts`; Redis key `islamic:zones`; `EXPIRE 86400`; use `node-fetch` or `undici` for upstream call; cache miss triggers fetch + store
+**Estimate:** S
+
+---
+
+## API-064: GET /v1/islamic/zones/detect — auto-detect zone from GPS
+
+**Epic:** Tetapan Islam
+**Status:** 🔲 Todo
+**Priority:** MVP
+
+**As a** mobile client **I want** to resolve the user's prayer zone from their GPS coordinates **so that** zone selection is automatic.
+
+**Acceptance criteria:**
+- [ ] `GET /v1/islamic/zones/detect?lat={lat}&lng={lng}` returns `{ zone: { code, negeri, lokasi } }`
+- [ ] Proxies to `GET https://api.waktusolat.app/v2/zones/{lat}/{lng}`
+- [ ] Response cached in Redis by `round(lat,2),round(lng,2)` key for 7 days (zone rarely changes)
+- [ ] Returns `404 { code: "ZONE_NOT_FOUND" }` if coordinates are outside Malaysia
+- [ ] Route is public
+
+**Technical notes:** `src/routes/islamic.ts`; cache key `islamic:zone:{lat2}:{lng2}`; EXPIRE 604800; lat/lng validated: lat 0.8–7.4, lng 99.6–119.3 (Malaysia bbox)
+**Estimate:** S
+
+---
+
+## API-065: GET /v1/islamic/zones/state/:state — zones by state
+
+**Epic:** Tetapan Islam
+**Status:** 🔲 Todo
+**Priority:** High
+
+**As a** mobile client **I want** to filter prayer time zones by state name **so that** the user can browse zones within their state when manually overriding.
+
+**Acceptance criteria:**
+- [ ] `GET /v1/islamic/zones/state/:state` (e.g. `/state/selangor`) returns `{ zones: [...] }`
+- [ ] Proxies to `GET https://api.waktusolat.app/v2/zones/:state`
+- [ ] State name is case-insensitive; normalised to lowercase before forwarding
+- [ ] Cached in Redis key `islamic:zones:state:{state}` for 24 hours
+- [ ] Returns `404 { code: "STATE_NOT_FOUND" }` for unknown state names
+- [ ] Route is public
+
+**Technical notes:** `src/routes/islamic.ts`; valid states: `johor|kedah|kelantan|melaka|negeri-sembilan|pahang|perak|perlis|pulau-pinang|sabah|sarawak|selangor|terengganu|wilayah-persekutuan`
+**Estimate:** S
+
+---
+
+## API-066: GET /v1/islamic/prayer-times — fetch today's prayer times
+
+**Epic:** Tetapan Islam
+**Status:** 🔲 Todo
+**Priority:** MVP
+
+**As a** mobile client **I want** a single cached prayer times endpoint **so that** all clients for the same zone share one upstream API call.
+
+**Acceptance criteria:**
+- [ ] `GET /v1/islamic/prayer-times?zone={code}` returns Malaysia times via `api.waktusolat.app/v2/solat/{zone}`
+- [ ] `GET /v1/islamic/prayer-times?lat={lat}&lng={lng}&method={n}` returns worldwide times via `api.aladhan.com/v1/timings/{date}`
+- [ ] Response: `{ date, zone, hijriDate, hijriMonth, hijriYear, prayers: [{ name, label, time }] }`
+- [ ] Cached per zone/coordinate pair, expires at midnight MYT (Asia/Kuala_Lumpur)
+- [ ] Redis key: `islamic:pt:{zone}:{YYYY-MM-DD}` or `islamic:pt:{lat2}:{lng2}:{YYYY-MM-DD}`
+- [ ] Route is public
+
+**Technical notes:** `src/routes/islamic.ts`; TTL = seconds until midnight MYT; `Intl.DateTimeFormat` for MYT midnight calculation; map upstream prayer field names to `{ fajr, syuruk, zohor, asar, maghrib, isyak }`
+**Estimate:** M
+
+---
+
+## API-067: GET /v1/islamic/nearest-masjid — nearest masjid/surau from GPS
+
+**Epic:** Tetapan Islam
+**Status:** 🔲 Todo
+**Priority:** High
+
+**As a** mobile client **I want** to find the nearest masjid or surau from the user's location **so that** the app can suggest a prayer stop and add it as a waypoint.
+
+**Acceptance criteria:**
+- [ ] `GET /v1/islamic/nearest-masjid?lat={lat}&lng={lng}&radius={m}&limit={n}` returns up to `limit` results (default 3, max 10)
+- [ ] Calls Nominatim: `GET https://geocode.arah.my/search?amenity=place_of_worship&religion=muslim&lat={lat}&lon={lng}&radius={radius}&format=json&limit={n}`
+- [ ] Response: `{ places: [{ id, name, type, lat, lng, distanceKm }] }` sorted by distance ascending
+- [ ] `type` mapped from Nominatim: `mosque` → `masjid`, `prayer_hall` → `surau`, else `musolla`
+- [ ] Radius capped at 10,000 m; default 5,000 m
+- [ ] Result cached in Redis key `islamic:masjid:{lat2}:{lng2}:{radius}` for 1 hour
+- [ ] Route is public
+
+**Technical notes:** `src/routes/islamic.ts`; Haversine distance computed server-side for accurate sort; Nominatim `countrycodes=my` not set — works worldwide; respect Nominatim rate limit (1 req/s) via Redis lock
+**Estimate:** M
+
+---
+
+## API-068: GET /v1/islamic/musafir — musafir distance check
+
+**Epic:** Tetapan Islam
+**Status:** 🔲 Todo
+**Priority:** Medium
+
+**As a** mobile client **I want** a server-side musafir calculation endpoint **so that** the logic stays consistent across platforms (iOS, Android, web).
+
+**Acceptance criteria:**
+- [ ] `GET /v1/islamic/musafir?olat={lat}&olng={lng}&dlat={lat}&dlng={lng}` returns musafir status
+- [ ] Response: `{ distanceKm, thresholdKm: 88.7, isMusafir, canShorten, canCombine, school: "Shafi'i" }`
+- [ ] Distance computed via Haversine on server
+- [ ] Route is public; no caching needed (computation is <1ms)
+- [ ] Both origin and destination coordinates validated (lat −90..90, lng −180..180)
+
+**Technical notes:** `src/routes/islamic.ts`; Haversine extracted to `src/utils/geo.ts`; school threshold `88.7` km = 48 bahr miles (Shafi'i/Maliki); future: add `school` query param for Hanafi (77.5 km)
+**Estimate:** S
+
