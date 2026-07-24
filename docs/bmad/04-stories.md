@@ -1474,11 +1474,11 @@ Islamic API routes. All endpoints prefixed `/v1/islamic`. Prayer time data proxi
 
 **Acceptance criteria:**
 - [ ] `GET /v1/islamic/musafir?olat={lat}&olng={lng}&dlat={lat}&dlng={lng}` returns musafir status
-- [ ] Response: `{ distanceKm, thresholdKm: 88.7, isMusafir, canShorten, canCombine, school: "Shafi'i" }`
+- [ ] Response: `{ distanceKm, thresholdKm: 81, isMusafir, canShorten, canCombine, standard: "Malaysia 2 Marhalah (Penyelarasan Baharu)" }`
 - [ ] Distance computed via Haversine on server
 - [ ] Route is public; no caching needed (computation is <1ms)
 - [ ] Both origin and destination coordinates validated (lat −90..90, lng −180..180)
 
-**Technical notes:** `src/routes/islamic.ts`; Haversine extracted to `src/utils/geo.ts`; school threshold `88.7` km = 48 bahr miles (Shafi'i/Maliki); future: add `school` query param for Hanafi (77.5 km)
+**Technical notes:** `src/routes/islamic.ts`; Haversine extracted to `src/utils/geo.ts`; threshold `81` km = kadar 2 marhalah penyelarasan baharu Malaysia; `standard` field in response documents the basis for the threshold
 **Estimate:** S
 
