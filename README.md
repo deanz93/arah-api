@@ -1,6 +1,6 @@
 # arah-api
 
-> 🔒 **Private Repository** — This repo is part of the [Arah platform](https://github.com/deanz93/arah). Source code is proprietary and not open-source.
+> [![License: MIT](https://img.shields.io/badge/License-MIT-00D8A0.svg)](../arah/LICENSE) Open-source · Part of the [Arah platform](https://github.com/deanz93/arah)
 
 
 
